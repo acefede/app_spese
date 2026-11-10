@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -15,7 +16,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/acefede/app_spese/7f07e870d23a967a9ac475a9e051658a2f384f48/icon_png.png">
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     html, body {
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
@@ -25,17 +29,25 @@
       min-height: 100%;
       overflow: hidden;
     }
+
     @supports (height: 100dvh) {
-      html, body { height: 100dvh; }
+      html, body {
+        height: 100dvh;
+      }
     }
+
     @supports (height: 100svh) {
-      html, body { min-height: 100svh; }
+      html, body {
+        min-height: 100svh;
+      }
     }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
       background: #eef2ff;
       color: #182238;
     }
+
     #status {
       position: fixed;
       inset: 0;
@@ -51,6 +63,7 @@
       overflow-wrap: anywhere;
       background: linear-gradient(145deg, #f4f7ff, #e5ecff);
     }
+
     #status .mark {
       width: 64px;
       height: 64px;
@@ -58,17 +71,19 @@
       object-fit: cover;
       box-shadow: 0 8px 24px rgba(28, 74, 150, .18);
     }
+
     #status .detail {
       color: #68758e;
       font-size: 13px;
       max-width: 360px;
     }
-    /* Iframe a schermo intero: nessuna fascia sopra o sotto. */
+
+    /* Iframe ancorato al bordo inferiore dello schermo */
     #app-frame {
       position: fixed;
       left: 0;
       right: 0;
-      top: 0;
+      top: auto;
       bottom: 0;
       width: 100%;
       height: 100vh;
@@ -114,10 +129,14 @@
       };
 
       let value;
+
       try {
         value = decodeURIComponent(window.location.hash.slice(1)).trim();
       } catch (_) {
-        showError("Il collegamento non è valido.", "Controlla l'indirizzo GitHub Pages.");
+        showError(
+          "Il collegamento non è valido.",
+          "Controlla l'indirizzo GitHub Pages."
+        );
         return;
       }
 
@@ -130,15 +149,27 @@
       }
 
       let appUrl;
-      const fullUrlPattern = /^https:\/\/script\.google\.com\/macros\/s\/([A-Za-z0-9_-]+)\/exec\/?$/;
+
+      const fullUrlPattern =
+        /^https:\/\/script\.google\.com\/macros\/s\/([A-Za-z0-9_-]+)\/exec\/?$/;
+
       const fullMatch = value.match(fullUrlPattern);
 
       if (fullMatch) {
-        appUrl = "https://script.google.com/macros/s/" + fullMatch[1] + "/exec";
+        appUrl =
+          "https://script.google.com/macros/s/" +
+          fullMatch[1] +
+          "/exec";
       } else if (/^[A-Za-z0-9_-]+$/.test(value)) {
-        appUrl = "https://script.google.com/macros/s/" + value + "/exec";
+        appUrl =
+          "https://script.google.com/macros/s/" +
+          value +
+          "/exec";
       } else {
-        showError("ID o indirizzo non valido.", "Inserisci l'ID del deployment oppure l'indirizzo completo che termina in /exec.");
+        showError(
+          "ID o indirizzo non valido.",
+          "Inserisci l'ID del deployment oppure l'indirizzo completo che termina in /exec."
+        );
         return;
       }
 
@@ -146,6 +177,7 @@
       detail.textContent = "Connessione a Google Apps Script";
 
       let loaded = false;
+
       const timeout = window.setTimeout(() => {
         if (!loaded) {
           showError(
